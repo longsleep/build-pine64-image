@@ -69,12 +69,13 @@ runshell() {
 
 boot() {
         echo "Kernel params: `cat /proc/cmdline`"
-        timeout=20;
+        local timeout=20;
+        local kernel_root_param=$(cmdline root)
 
         while [ "$timeout" -ge 1 ]; do
-                echo "Waiting for root system $(cmdline root), countdown : $timeout";
-                if [ -e $(cmdline root) ]; then
-                        realboot $(cmdline root);
+                echo "Waiting for root system $kernel_root_param, countdown : $timeout";
+                if [ -e "$kernel_root_param" ]; then
+                        realboot $kernel_root_param;
                 fi;
 
                 timeout=$(( $timeout - 1 ));
