@@ -53,12 +53,50 @@ trap cleanup EXIT
 ROOTFS=""
 UNTAR="bsdtar -xpf"
 
+dwn_rootfs() {
+    TARBALL="$BUILD/$(basename $ROOTFS)"
+    if [ ! -e "$TARBALL" ]; then
+	    echo "Downloading $DISTRO rootfs tarball ..."
+	    wget -O "$TARBALL" "$ROOTFS"
+    fi
+}
+
+untar_rootfs() {
+    # Extract with BSD tar
+    echo -n "Extracting ... "
+    set -x
+    $UNTAR "$TARBALL" -C "$DEST"
+    echo "OK"
+}
+
+untar_centos_rootfs() {
+    # Extract with BSD tar
+    echo -n "Extracting ... "
+    set -x
+    xz -d "$TARBALL"
+    TMPDIR=`mktemp -d`
+    mount -o ro,loop,offset=2622488576 "${TARBALL%%".xz"*}" "${TMPDIR}"
+    cp -ar "${TMPDIR}"/* "$DEST"
+    umount "${TMPDIR}" 
+    rm -rf "${TARBALL%%".xz"*}"
+    echo "OK"
+}
+
 case $DISTRO in
+    centos)
+        ROOTFS="http://mirror.centos.org/altarch/7/isos/aarch64/CentOS-aarch64.img.xz"
+        dwn_rootfs
+        untar_centos_rootfs
+        ;;
 	arch)
 		ROOTFS="http://archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
+        dwn_rootfs
+        untar_rootfs
 		;;
 	xenial)
 		ROOTFS="http://cdimage.ubuntu.com/ubuntu-core/releases/xenial/release/ubuntu-core-16.04-core-arm64.tar.gz"
+        dwn_rootfs
+        untar_rootfs
 		;;
 	*)
 		echo "Unknown distribution: $DISTRO"
@@ -66,27 +104,17 @@ case $DISTRO in
 		;;
 esac
 
-TARBALL="$BUILD/$(basename $ROOTFS)"
-if [ ! -e "$TARBALL" ]; then
-	echo "Downloading $DISTRO rootfs tarball ..."
-	wget -O "$TARBALL" "$ROOTFS"
-fi
+do_prepare_chroot() {
+    # Add qemu emulation.
+    cp /usr/bin/qemu-aarch64-static "$DEST/usr/bin"
 
-# Extract with BSD tar
-echo -n "Extracting ... "
-set -x
-$UNTAR "$TARBALL" -C "$DEST"
-echo "OK"
-
-# Add qemu emulation.
-cp /usr/bin/qemu-aarch64-static "$DEST/usr/bin"
-
-# Prevent services from starting
+    # Prevent services from starting
 cat > "$DEST/usr/sbin/policy-rc.d" <<EOF
 #!/bin/sh
 exit 101
 EOF
-chmod a+x "$DEST/usr/sbin/policy-rc.d"
+    chmod a+x "$DEST/usr/sbin/policy-rc.d"
+}
 
 do_chroot() {
 	cmd="$@"
@@ -214,7 +242,21 @@ add_asound_state() {
 
 # Run stuff in new system.
 case $DISTRO in
+    centos)
+		mv "$DEST/etc/resolv.conf" "$DEST/etc/resolv.conf.dist"
+        cp /etc/resolv.conf "$DEST/etc/resolv.conf"
+        add_platform_scripts 
+        add_mackeeper_service
+        add_corekeeper_service
+        add_ssh_keygen_service
+        add_disp_udev_rules
+        add_wifi_module_autoload
+        add_asound_state
+		rm -f "$DEST/etc/resolv.conf"
+		mv "$DEST/etc/resolv.conf.dist" "$DEST/etc/resolv.conf"
+        ;;
 	arch)
+        do_prepare_chroot
 		# Cleanup preinstalled Kernel
 		mv "$DEST/etc/resolv.conf" "$DEST/etc/resolv.conf.dist"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
@@ -230,6 +272,7 @@ case $DISTRO in
 		mv "$DEST/etc/resolv.conf.dist" "$DEST/etc/resolv.conf"
 		;;
 	xenial)
+        do_prepare_chroot
 		rm "$DEST/etc/resolv.conf"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
 		add_ubuntu_apt_sources xenial
@@ -323,7 +366,11 @@ else
 fi
 
 # Clean up
-rm -f "$DEST/usr/bin/qemu-aarch64-static"
-rm -f "$DEST/usr/sbin/policy-rc.d"
+if [ -f "$DEST/usr/bin/qemu-aarch64-static" ]; then
+    rm -f "$DEST/usr/bin/qemu-aarch64-static"
+fi
+if [ -f "$DEST/usr/sbin/policy-rc.d" ]; then
+    rm -f "$DEST/usr/sbin/policy-rc.d"
+fi
 
 echo "Done - installed rootfs to $DEST"
