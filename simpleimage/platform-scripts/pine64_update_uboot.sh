@@ -32,7 +32,11 @@ if [ -e "${CURRENTFILE}" ]; then
 fi
 
 echo "Checking for update ..."
-ETAG=$(curl -f -I -H "If-None-Match: \"${CURRENT}\"" -s "${URL}"|grep ETag|awk -F'"' '{print $2}')
+if [ -z ${CURRENT} ]; then
+    ETAG=$(curl -f -I -s "${URL}" | grep etag | awk -F'"' '{print $2}')
+else
+    ETAG=$(curl -f -I -H "If-None-Match: \"${CURRENT}\"" -s "${URL}"|grep ETag|awk -F'"' '{print $2}')
+fi
 
 if [ -z "$ETAG" ]; then
 	echo "Version $VERSION not found."
