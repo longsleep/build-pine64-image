@@ -6,3 +6,9 @@ description: |
 type: gadget
 architectures:
     - arm64
+confinement: strict
+grade: stable
+parts:
+    prebuilt:
+        plugin: dump
+        source: prebuilt
