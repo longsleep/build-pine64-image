@@ -22,6 +22,6 @@
 /snappy/*/stage
 /snappy/*/prime
 /snappy/*/parts
-/snappy/gadget/uboot.env
-/snappy/gadget/uboot.conf
-/snappy/gadget/boot-assets
+/snappy/gadget/prebuilt/uboot.env
+/snappy/gadget/prebuilt/uboot.conf
+/snappy/gadget/prebuilt/boot-assets
