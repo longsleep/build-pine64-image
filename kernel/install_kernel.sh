@@ -79,10 +79,14 @@ else
 	# Not found, use device tree from BSP.
 	echo "Compiling device tree from $BLOBS/${basename}.dts"
 	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64-plus.dtb" "$BLOBS/${basename}.dts"
+	echo "Compiling device tree from $BLOBS/${basename}lcd.dts"
+	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64-plus-lcd.dtb" "$BLOBS/${basename}lcd.dts"
 	echo "Compiling device tree from $BLOBS/${basename}noplus.dts"
 	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64.dtb" "$BLOBS/${basename}noplus.dts"
 	echo "Compiling device tree from $BLOBS/${basename}so.dts"
 	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64-so.dtb" "$BLOBS/${basename}so.dts"
+	echo "Compiling device tree from $BLOBS/pinebook.dts"
+	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pinebook.dtb" "$BLOBS/pinebook.dts"
 fi
 
 if [ ! -e "$DEST/uEnv.txt" ]; then
