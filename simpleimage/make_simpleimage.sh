@@ -17,12 +17,21 @@
 
 set -e
 
-out="$1"
-disk_size="$2"
+type="$1"
+out="$2"
 kernel_tarball="$3"
+disk_size="$4"
 
-if [ -z "$out" ]; then
-	echo "Usage: $0 <image-file.img> [disk size in MiB] [<kernel-tarball>]"
+if [ -z "$out" -o -z "$type" -o -z "$kernel_tarball" ]; then
+	echo "Usage: $0 <image-type> <image-file.img> <kernel-tarball-or-folder> [disk size in MiB]"
+	echo ""
+	echo "Image type:"
+	echo ""
+	echo "pine64      - Pine A64"
+	echo "pine64lcd   - Pine A64 with LCD"
+	echo "sopine      - SoPine A64"
+	echo "pinebook    - Pinebook"
+	echo ""
 	exit 1
 fi
 
@@ -35,9 +44,19 @@ if [ "$disk_size" -lt 60 ]; then
 	exit 2
 fi
 
+if [ $type = "pine64" -o $type = "pine64lcd" ]; then
+	boot0="../blobs/boot0.bin"
+elif [ $type = "sopine" ]; then
+	boot0="../blobs/boot0so.bin"
+elif [ $type = "pinebook" ]; then
+	boot0="../blobs/boot0book.bin"
+else
+	echo "Invalid image type specified"
+	exit 3
+fi
+
 echo "Creating image $out of size $disk_size MiB ..."
 
-boot0="../blobs/boot0.bin"
 uboot="../build/u-boot-with-dtb.bin"
 kernel="../build"
 
@@ -55,6 +74,14 @@ if [ -n "$kernel_tarball" ]; then
 	tar -C $temp -xJf "$kernel_tarball"
 	kernel=$temp/boot
 	mv $temp/boot/uEnv.txt.in $temp/boot/uEnv.txt
+fi
+
+if [ $type = "pine64lcd" ]; then
+	echo "pine64_model=pine64-plus-lcd" >> $temp/boot/uEnv.txt
+elif [ $type = "sopine" ]; then
+	echo "pine64_model=pine64-so" >> $temp/boot/uEnv.txt
+elif [ $type = "pinebook" ]; then
+	echo "pine64_model=pinebook" >> $temp/boot/uEnv.txt
 fi
 
 boot0_position=8      # KiB
