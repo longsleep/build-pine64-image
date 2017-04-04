@@ -15,11 +15,24 @@ DEST="$1"
 LINUX="$2"
 DISTRO="$3"
 BOOT="$4"
+LCD="$5"
 
 if [ -z "$DEST" -o -z "$LINUX" ]; then
-	echo "Usage: $0 <destination-folder> <linux-folder> [distro] [<boot-folder>]"
+	echo "Usage: $0 <destination-folder> <linux-folder-or-tarball> [distro] [boot-folder] [-lcd]"
+	echo ""
+	echo "Distros available:"
+	echo "arch - Arch Linux"
+	echo "xenial - Ubuntu Linux (Xenial Xerus)"
+	echo "sid - Debian Linux (sid)"
+	echo "jessie - Debian Linux (jessie)"
+	echo "opensuse - OpenSUSE Tumbleweed"
+	echo ""
+	echo "If no distro is specified, this tool will default to xenial"
+
 	exit 1
 fi
+
+
 
 if [ "$(id -u)" -ne "0" ]; then
 	echo "This script requires root."
@@ -49,11 +62,18 @@ fi
 
 TEMP=$(mktemp -d)
 cleanup() {
+	set +e
 	if [ -e "$DEST/proc/cmdline" ]; then
 		umount "$DEST/proc"
 	fi
 	if [ -d "$DEST/sys/kernel" ]; then
 		umount "$DEST/sys"
+	fi
+	if [ -e "$DEST/dev/pts/0" ]; then
+		umount "$DEST/dev/pts"
+	fi
+	if [ -e "$DEST/dev/cpu" ]; then
+		umount "$DEST/dev"
 	fi
 	if [ -d "$TEMP" ]; then
 		rm -rf "$TEMP"
@@ -75,6 +95,9 @@ case $DISTRO in
 	sid|jessie)
 		ROOTFS="${DISTRO}-base-arm64.tar.gz"
 		METHOD="debootstrap"
+		;;
+	opensuse)
+		ROOTFS="http://download.opensuse.org/ports/aarch64/factory/images/openSUSE-Tumbleweed-ARM-JeOS.aarch64-rootfs.aarch64-Current.tbz"
 		;;
 	*)
 		echo "Unknown distribution: $DISTRO"
@@ -143,6 +166,10 @@ cat > "$DEST/usr/sbin/policy-rc.d" <<EOF
 exit 101
 EOF
 chmod a+x "$DEST/usr/sbin/policy-rc.d"
+
+# Mount dev
+mount --bind /dev $DEST/dev
+mount --bind /dev/pts $DEST/dev/pts
 
 do_chroot() {
 	cmd="$@"
@@ -327,7 +354,9 @@ EOF
 			DEBUSERPW=ubuntu
 			EXTRADEBS="software-properties-common zram-config ubuntu-minimal"
 			ADDPPACMD="apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers"
-			DISPTOOLCMD="apt-get -y install sunxi-disp-tool"
+			if [ ! "$LCD" = "-lcd" ]
+				DISPTOOLCMD="apt-get -y install sunxi-disp-tool"
+			fi
 		elif [ "$DISTRO" = "sid" -o "$DISTRO" = "jessie" ]; then
 			DEB=debian
 			DEBUSER=debian
@@ -389,6 +418,78 @@ EOF
 		rm -f "$DEST/etc/resolv.conf"
 		rm -f "$DEST"/etc/ssh/ssh_host_*
 		do_chroot ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
+		;;
+	opensuse)
+		cat > "$DEST/etc/resolv.conf" << "EOF"
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+
+		cat > "$DEST/second-phase" <<EOF
+#!/bin/sh
+zypper remove -y kernel-default kernel-firmware
+zypper update
+zypper install -y dosfstools rfkill newt xterm patterns-openSUSE-yast2_basis
+zypper ar -f http://files.pine64.org/opensuse/repository "Pine64 support packages for openSUSE"
+zypper --gpg-auto-import-keys refresh
+passwd << END
+pine64root
+pine64root
+END
+useradd -m pine64
+passwd pine64 << END
+pine64linux
+pine64linux
+END
+groupadd sudo
+groupadd adm
+groupadd plugdev
+usermod -a -G sudo,adm,input,video,plugdev pine64
+zypper clean -a
+EOF
+		chmod +x "$DEST/second-phase"
+		do_chroot /second-phase
+		cat > "$DEST/etc/hostname" <<EOF
+pine64
+EOF
+		cat > "$DEST/etc/hosts" <<EOF
+127.0.0.1 localhost
+127.0.1.1 pine64
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+EOF
+		# Install platform scripts
+		mkdir -p "$DEST/usr/local/sbin"
+		cp -av ./platform-scripts/* "$DEST/usr/local/sbin"
+		wget http://files.pine64.org/opensuse/tools/pine64-config/opensuse/pine64-config.sh -O $DEST/usr/local/sbin/pine64-config.sh		
+		chown root.root "$DEST/usr/local/sbin/"*
+		chmod 755 "$DEST/usr/local/sbin/"*		
+
+		# Need this patch to fix the update scripts for the next step in openSUSE
+		sed -i 's/ETag/etag/g' $DEST/usr/local/sbin/pine64_update_kernel.sh
+		sed -i 's/ETag/etag/g' $DEST/usr/local/sbin/pine64_update_uboot.sh
+
+		# Set Kernel and U-boot update version
+		do_chroot /usr/bin/env MARK_ONLY=1 /usr/local/sbin/pine64_update_kernel.sh
+		do_chroot /usr/bin/env MARK_ONLY=1 /usr/local/sbin/pine64_update_uboot.sh
+		
+		# Remove scripts that are incompatible with openSUSE or already provided by pine64-config
+		rm $DEST/usr/local/sbin/install_mate_desktop.sh
+		rm $DEST/usr/local/sbin/pine64_update_kernel.sh
+		rm $DEST/usr/local/sbin/pine64_update_uboot.sh
+
+		add_mackeeper_service
+		add_corekeeper_service
+		add_ssh_keygen_service
+		add_disp_udev_rules
+		add_wifi_module_autoload
+		add_asound_state
+		sed -i 's|After=rc.local.service|#\0|;' "$DEST/usr/lib/systemd/system/serial-getty@.service"
+		rm -f "$DEST/second-phase"
 		;;
 	*)
 		;;
