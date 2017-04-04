@@ -435,12 +435,7 @@ zypper remove -y kernel-default kernel-firmware
 zypper update
 zypper install -y dosfstools rfkill newt xterm patterns-openSUSE-yast2_basis
 zypper ar -f http://files.pine64.org/opensuse/repository "Pine64 support packages for openSUSE"
-echo
-echo "###########################################################################"
-echo "# For the prompt below, please answer it with 'a' for optimum performance #"
-echo "###########################################################################"
-echo
-zypper refresh
+zypper --gpg-auto-import-keys refresh
 passwd << END
 pine64root
 pine64root
