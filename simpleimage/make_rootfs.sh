@@ -15,10 +15,9 @@ DEST="$1"
 LINUX="$2"
 DISTRO="$3"
 BOOT="$4"
-LCD="$5"
 
 if [ -z "$DEST" -o -z "$LINUX" ]; then
-	echo "Usage: $0 <destination-folder> <linux-folder-or-tarball> [distro] [boot-folder] [-lcd]"
+	echo "Usage: $0 <destination-folder> <linux-folder-or-tarball> [distro] [boot-folder] [variables]"
 	echo ""
 	echo "Distros available:"
 	echo "arch - Arch Linux"
@@ -28,6 +27,11 @@ if [ -z "$DEST" -o -z "$LINUX" ]; then
 	echo "opensuse - OpenSUSE Tumbleweed"
 	echo ""
 	echo "If no distro is specified, this tool will default to xenial"
+	echo ""
+	echo "Variables available:"
+	echo ""
+	echo "LCD=1       Enable LCD support"
+	echo ""
 
 	exit 1
 fi
@@ -354,7 +358,7 @@ EOF
 			DEBUSERPW=ubuntu
 			EXTRADEBS="software-properties-common zram-config ubuntu-minimal"
 			ADDPPACMD="apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers"
-			if [ ! "$LCD" = "-lcd" ]
+			if [ ! "$LCD" -eq 1 ]; then
 				DISPTOOLCMD="apt-get -y install sunxi-disp-tool"
 			fi
 		elif [ "$DISTRO" = "sid" -o "$DISTRO" = "jessie" ]; then
