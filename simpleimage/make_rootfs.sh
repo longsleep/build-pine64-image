@@ -66,18 +66,17 @@ fi
 
 TEMP=$(mktemp -d)
 cleanup() {
-	set +e
 	if [ -e "$DEST/proc/cmdline" ]; then
-		umount "$DEST/proc"
+		umount "$DEST/proc" || true
 	fi
 	if [ -d "$DEST/sys/kernel" ]; then
-		umount "$DEST/sys"
+		umount "$DEST/sys" || true
 	fi
 	if [ -e "$DEST/dev/pts/0" ]; then
-		umount "$DEST/dev/pts"
+		umount "$DEST/dev/pts" || true
 	fi
 	if [ -e "$DEST/dev/cpu" ]; then
-		umount "$DEST/dev"
+		umount "$DEST/dev" || true
 	fi
 	if [ -d "$TEMP" ]; then
 		rm -rf "$TEMP"
