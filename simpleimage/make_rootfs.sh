@@ -86,7 +86,7 @@ cleanup() {
 trap cleanup EXIT
 
 ROOTFS=""
-UNTAR="bsdtar -xpf"
+UNTAR="tar xzpsf"
 METHOD="download"
 
 case $DISTRO in
@@ -94,7 +94,7 @@ case $DISTRO in
 		ROOTFS="http://archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 		;;
 	xenial)
-		ROOTFS="http://cdimage.ubuntu.com/ubuntu-base/releases/16.04.1/release/ubuntu-base-16.04.1-base-arm64.tar.gz"
+		ROOTFS="http://cdimage.ubuntu.com/ubuntu-base/releases/16.04.2/release/ubuntu-base-16.04.2-base-arm64.tar.gz"
 		;;
 	sid|jessie)
 		ROOTFS="${DISTRO}-base-arm64.tar.gz"
@@ -102,6 +102,7 @@ case $DISTRO in
 		;;
 	opensuse)
 		ROOTFS="http://download.opensuse.org/ports/aarch64/factory/images/openSUSE-Tumbleweed-ARM-JeOS.aarch64-rootfs.aarch64-Current.tbz"
+		UNTAR="tar xjpsf"
 		;;
 	*)
 		echo "Unknown distribution: $DISTRO"
@@ -155,7 +156,7 @@ if [ ! -e "$TARBALL" ]; then
 	fi
 fi
 
-# Extract with BSD tar
+# Extract with tar
 echo -n "Extracting ... "
 set -x
 $UNTAR "$TARBALL" -C "$DEST"
@@ -432,7 +433,7 @@ EOF
 		cat > "$DEST/second-phase" <<EOF
 #!/bin/sh
 zypper remove -y kernel-default kernel-firmware
-zypper update
+zypper update -y
 zypper install -y dosfstools rfkill newt xterm patterns-openSUSE-yast2_basis
 zypper ar -f http://files.pine64.org/opensuse/repository "Pine64 support packages for openSUSE"
 zypper --gpg-auto-import-keys refresh
