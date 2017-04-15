@@ -17,13 +17,13 @@
 
 set -e
 
-type="$1"
-out="$2"
-disk_size="$3"
-kernel_tarball="$4"
+out="$1"
+disk_size="$2"
+kernel_tarball="$3"
+type="$4"
 
 if [ -z "$out" ]; then
-	echo "Usage: $0 <image-type> <image-file.img> [disk size in MiB] [kernel-tarball]"
+	echo "Usage: $0 <image-file.img> [disk size in MiB] [kernel-tarball] [image-type]"
 	echo ""
 	echo "Image type:"
 	echo ""
@@ -32,9 +32,12 @@ if [ -z "$out" ]; then
 	echo "sopine      - SoPine A64"
 	echo "pinebook    - Pinebook"
 	echo ""
+	echo "If image type is not specified, this tool will default to pine64"
 	exit 1
 fi
-	exit 1
+
+if [ -z $type ]; then
+	type="pine64"
 fi
 
 if [ -z "$disk_size" ]; then
