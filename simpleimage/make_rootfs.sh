@@ -85,7 +85,7 @@ cleanup() {
 trap cleanup EXIT
 
 ROOTFS=""
-UNTAR="tar xzpsf"
+UNTAR="bsdtar -xpf"
 METHOD="download"
 
 case $DISTRO in
@@ -101,7 +101,6 @@ case $DISTRO in
 		;;
 	opensuse)
 		ROOTFS="http://download.opensuse.org/ports/aarch64/factory/images/openSUSE-Tumbleweed-ARM-JeOS.aarch64-rootfs.aarch64-Current.tbz"
-		UNTAR="tar xjpsf"
 		;;
 	*)
 		echo "Unknown distribution: $DISTRO"
@@ -155,7 +154,7 @@ if [ ! -e "$TARBALL" ]; then
 	fi
 fi
 
-# Extract with tar
+# Extract with BSD tar
 echo -n "Extracting ... "
 set -x
 $UNTAR "$TARBALL" -C "$DEST"
