@@ -85,8 +85,11 @@ else
 	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64.dtb" "$BLOBS/${basename}noplus.dts"
 	echo "Compiling device tree from $BLOBS/${basename}so.dts"
 	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64-so.dtb" "$BLOBS/${basename}so.dts"
-	echo "Compiling device tree from $BLOBS/pinebook.dts"
-	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pinebook.dtb" "$BLOBS/pinebook.dts"
+	echo "Compiling device tree from $BLOBS/${basename}pinebook.dts"
+	dtc -Odtb -o "$DEST/$SUBFOLDER/sun50i-a64-pine64-pinebook.dtb" "$BLOBS/${basename}pinebook.dts"
+
+	# Add bootlogo.
+	cp -v "$BOOTLOGO" "$DEST/$BOOTLOGO_TARGET"
 fi
 
 if [ ! -e "$DEST/uEnv.txt" ]; then

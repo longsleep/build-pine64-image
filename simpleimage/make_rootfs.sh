@@ -170,17 +170,17 @@ exit 101
 EOF
 chmod a+x "$DEST/usr/sbin/policy-rc.d"
 
-# Mount dev
-mount --bind /dev $DEST/dev
-mount --bind /dev/pts $DEST/dev/pts
-
 do_chroot() {
 	cmd="$@"
+	mount --bind /dev $DEST/dev
+	mount --bind /dev/pts $DEST/dev/pts
 	chroot "$DEST" mount -t proc proc /proc || true
 	chroot "$DEST" mount -t sysfs sys /sys || true
 	chroot "$DEST" $cmd
 	chroot "$DEST" umount /sys
 	chroot "$DEST" umount /proc
+	umount $DEST/dev/pts
+	umount $DEST/dev
 }
 
 add_platform_scripts() {
