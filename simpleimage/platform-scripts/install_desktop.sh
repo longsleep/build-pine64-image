@@ -114,6 +114,9 @@ export VDPAU_DRIVER=sunxi
 EOF
 fi
 
+# Create directory if not present
+[ -d /etc/chromium-browser ] || mkdir /etc/chromium-browser
+
 # Set some default parameters for chromium.
 if [ ! -e "/etc/chromium-browser/default" ]; then
 	cat > "/etc/chromium-browser/default" <<EOF
