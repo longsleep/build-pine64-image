@@ -181,24 +181,28 @@ add_systemd_services() {
 
 add_udev_rules() {
 	# Install extra udev rules.
+	mkdir -p "$DEST/etc/udev/rules.d"
 	cp -av ./configuration-files/udev-rules.d/* "$DEST/etc/udev/rules.d/"
 	chown -R root.root "$DEST/etc/udev/rules.d"
 }
 
 add_modprobe_d() {
 	# Install modprobe.d.
+	mkdir -p "$DEST/etc/modprobe.d"
 	cp -av ./configuration-files/modprobe.d/* "$DEST/etc/modprobe.d/"
 	chown -R root.root "$DEST/etc/modprobe.d"
 }
 
 add_modules_load_d() {
 	# Install modules-load.d.
+	mkdir -p "$DEST/etc/modules-load.d"
 	cp -av ./configuration-files/modules-load.d/* "$DEST/etc/modules-load.d/"
 	chown -R root.root "$DEST/etc/modules-load.d"
 }
 
 add_firstboot_d() {
 	# Install firstboot scripts.
+	mkdir -p "$DEST/etc/pine64-firstboot.d"
 	cp -av ./configuration-files/pine64-firstboot.d/* "$DEST/etc/pine64-firstboot.d/"
 	chown -R root.root "$DEST/etc/pine64-firstboot.d"
 }
