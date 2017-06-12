@@ -163,7 +163,7 @@ add_platform_scripts() {
 	# Install platform scripts
 	mkdir -p "$DEST/usr/local/sbin"
 	cp -av ./platform-scripts/* "$DEST/usr/local/sbin/"
-	chown root.root "$DEST/usr/local/sbin/*"
+	chown -R root.root "$DEST/usr/local/sbin"
 	chmod 755 "$DEST/usr/local/sbin/*"
 }
 
@@ -174,7 +174,7 @@ add_systemd_services() {
 	for service in "${services[@]}"; do
 		servicename=$(basename $service)
 		cp -av $service "$DEST/etc/systemd/system/"
-		chown root.root "$DEST/etc/systemd/system/*"
+		chown -R root.root "$DEST/etc/systemd/system"
 		do_chroot systemctl enable $servicename
 	done
 }
@@ -182,25 +182,25 @@ add_systemd_services() {
 add_udev_rules() {
 	# Install extra udev rules.
 	cp -av ./configuration-files/udev-rules.d/* "$DEST/etc/udev/rules.d/"
-	chown root.root "$DEST/etc/udev/rules.d/*"
+	chown -R root.root "$DEST/etc/udev/rules.d"
 }
 
 add_modprobe_d() {
 	# Install modprobe.d.
 	cp -av ./configuration-files/modprobe.d/* "$DEST/etc/modprobe.d/"
-	chown root.root "$DEST/etc/modprobe.d/*"
+	chown -R root.root "$DEST/etc/modprobe.d"
 }
 
 add_modules_load_d() {
 	# Install modules-load.d.
 	cp -av ./configuration-files/modules-load.d/* "$DEST/etc/modules-load.d/"
-	chown root.root "$DEST/etc/modules-load.d/*"
+	chown -R root.root "$DEST/etc/modules-load.d"
 }
 
 add_firstboot_d() {
 	# Install firstboot scripts.
 	cp -av ./configuration-files/pine64-firstboot.d/* "$DEST/etc/pine64-firstboot.d/"
-	chown root.root "$DEST/etc/pine64-firstboot.d/*"
+	chown -R root.root "$DEST/etc/pine64-firstboot.d"
 }
 
 add_asound_state() {
