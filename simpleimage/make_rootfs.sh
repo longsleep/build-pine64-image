@@ -164,7 +164,7 @@ add_platform_scripts() {
 	mkdir -p "$DEST/usr/local/sbin"
 	cp -av ./platform-scripts/* "$DEST/usr/local/sbin/"
 	chown -R root.root "$DEST/usr/local/sbin"
-	chmod 755 "$DEST/usr/local/sbin/*"
+	chmod -R 755 "$DEST/usr/local/sbin"
 }
 
 add_systemd_services() {
