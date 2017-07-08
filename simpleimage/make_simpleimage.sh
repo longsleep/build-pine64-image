@@ -73,7 +73,7 @@ trap cleanup EXIT
 boot0_position=8      # KiB
 uboot_position=19096  # KiB
 part_position=20480   # KiB
-boot_size=50          # MiB
+boot_size=100          # MiB
 
 # Create beginning of disk
 dd if=/dev/zero bs=1M count=$((part_position/1024)) of="$out"
