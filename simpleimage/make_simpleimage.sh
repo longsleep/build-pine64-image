@@ -28,7 +28,7 @@ if [ -z "$out" ]; then
 fi
 
 if [ -z "$disk_size" ]; then
-	disk_size=100 #MiB
+	disk_size=150 #MiB
 fi
 
 if [ "$disk_size" -lt 60 ]; then
