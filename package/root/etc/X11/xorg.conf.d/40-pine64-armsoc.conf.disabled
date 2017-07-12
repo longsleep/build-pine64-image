@@ -1,0 +1,21 @@
+Section "Device"
+	Identifier "armsoc_sunxi"
+	Driver	"armsoc"
+#	Option	"Debug"           "true"
+	Option	"NoFlip"          "false"
+#	Option	"DRICard"         "0"
+#	Option	"BusID"           ""
+#	Option  "DriverName"      "false"
+	Option  "DRI2MaxBuffers"  "2"
+	Option	"InitFromFBDev"   "/dev/fb0"
+EndSection
+
+Section "Screen"
+	Identifier   "Mali-Screen"
+	Device       "armsoc_sunxi"
+	DefaultDepth 24
+	DefaultBpp   32
+	SubSection  "RGB565"
+		Depth		16
+	EndSubSection
+EndSection
