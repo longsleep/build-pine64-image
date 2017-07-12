@@ -27,6 +27,8 @@ fi
 # Default packages.
 PACKAGES=(
 	xserver-xorg-video-fbturbo
+	xserver-xorg-video-armsoc-sunxi
+	libmali-sunxi-utgard0-r6p0
 	libvdpau-sunxi1
 	vdpauinfo
 	aisleriot

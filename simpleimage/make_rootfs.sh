@@ -152,7 +152,8 @@ case $DISTRO in
 			DEBUSERPW=pine64
 			ADDPPACMD="apt-get -y update && \
 				apt-get install -y software-properties-common && \
-				apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers \
+				apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers && \
+				apt-add-repository -y ppa:ayufan/pine64-ppa \
 			"
 			EXTRADEBS="\
 				zram-config \
@@ -177,6 +178,7 @@ set -ex
 export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
 $ADDPPACMD
+curl -fsSL http://deb.ayufan.eu/orgs/ayufan-rock64/archive.key | apt-key add -
 apt-get -y update
 apt-get -y install dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server alsa-utils \
 	nano git build-essential vim jq wget ca-certificates $EXTRADEBS
@@ -191,6 +193,12 @@ apt-get clean
 EOF
 		chmod +x "$DEST/second-phase"
 		do_chroot /second-phase
+		cat > "$DEST/etc/apt/sources.list.d/ayufan-pine64.list" <<EOF
+deb http://deb.ayufan.eu/orgs/ayufan-pine64/releases /
+
+# uncomment to use pre-release kernels and compatibility packages
+# deb http://deb.ayufan.eu/orgs/ayufan-pine64/pre-releases /
+EOF
 		cat > "$DEST/etc/network/interfaces.d/eth0" <<EOF
 allow-hotplug eth0
 iface eth0 inet dhcp
