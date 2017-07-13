@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if ! dpkg -l xserver-xorg-video-armsoc-sunxi &>/dev/null || ! dpkg -l libmali-sunxi &>/dev/null; then
+    echo "The armsoc-sunxi and libmali is not installed!"
+    echo "Please run this before trying again:"
+    echo ""
+    echo "  apt-add-repository -y ppa:ayufan/pine64-ppa"
+    echo "  apt-get update"
+    echo "  apt-get install -y xserver-xorg-video-armsoc-sunxi libmali-sunxi-utgard0-r6p0"
+    exit 1
+fi
+
 set -xe
 
 dpkg-divert --divert /etc/modules-load.d/pine64-disp.conf.disabled --rename /etc/modules-load.d/pine64-disp.conf
