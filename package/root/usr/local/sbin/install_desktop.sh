@@ -29,6 +29,8 @@ PACKAGES=(
 	xserver-xorg-video-fbturbo
 	xserver-xorg-video-armsoc-sunxi
 	libmali-sunxi-utgard0-r6p0
+	mesa-utils-extra
+	glmark2-es2
 	libvdpau-sunxi1
 	vdpauinfo
 	aisleriot
