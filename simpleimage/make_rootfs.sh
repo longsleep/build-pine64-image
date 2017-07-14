@@ -181,7 +181,7 @@ $ADDPPACMD
 curl -fsSL http://deb.ayufan.eu/orgs/ayufan-rock64/archive.key | apt-key add -
 apt-get -y update
 apt-get -y install dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server alsa-utils \
-	nano git build-essential vim jq wget ca-certificates $EXTRADEBS
+	nano git build-essential vim jq wget ca-certificates htop figlet $EXTRADEBS
 apt-get -y remove --purge ureadahead
 apt-get -y update
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
@@ -228,7 +228,7 @@ EOF
 				do_chroot /usr/local/sbin/install_desktop.sh mate
 				do_chroot systemctl set-default graphical.target
 				;;
-			
+
 			i3)
 				do_chroot /usr/local/sbin/install_desktop.sh i3
 				do_chroot systemctl set-default graphical.target
