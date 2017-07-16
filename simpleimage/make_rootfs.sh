@@ -187,7 +187,7 @@ apt-get -y update
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
 chown -R 1000:1000 /home/$DEBUSER
 echo "$DEBUSER:$DEBUSERPW" | chpasswd
-usermod -a -G sudo,adm,input,video,plugdev $DEBUSER
+usermod -a -G sudo,adm,audio,input,video,plugdev $DEBUSER
 apt-get -y autoremove
 apt-get clean
 EOF
