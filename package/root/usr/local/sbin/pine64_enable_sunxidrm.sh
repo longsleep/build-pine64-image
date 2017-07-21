@@ -14,8 +14,12 @@ set -xe
 
 dpkg-divert --divert /etc/modules-load.d/pine64-disp.conf.disabled --rename /etc/modules-load.d/pine64-disp.conf
 dpkg-divert --divert /etc/X11/xorg.conf.d/40-pine64-fbturbo.conf.disabled --rename /etc/X11/xorg.conf.d/40-pine64-fbturbo.conf
+dpkg-divert --divert /etc/ld.so.conf.d/aarch64-linux-gnu_EGL.conf.disabled --rename /etc/ld.so.conf.d/aarch64-linux-gnu_EGL.conf
 
 dpkg-divert --divert /etc/modules-load.d/pine64-sunxidrm.conf --rename /etc/modules-load.d/pine64-sunxidrm.conf.disabled
 dpkg-divert --divert /etc/X11/xorg.conf.d/40-pine64-armsoc.conf --rename /etc/X11/xorg.conf.d/40-pine64-armsoc.conf.disabled
+dpkg-divert --divert /etc/ld.so.conf.d/mali.conf --rename /etc/ld.so.conf.d/mali.conf.disabled
+
+ldconfig
 
 echo "Done. Please reboot!"
