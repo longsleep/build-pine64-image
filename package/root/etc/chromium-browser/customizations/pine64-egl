@@ -1,0 +1,6 @@
+# Options to pass to chromium-browser
+if [ -d /sys/module/sunxidrm ]; then
+    CHROMIUM_FLAGS="$CHROMIUM_FLAGS \
+    --use-gl=egl
+    "
+fi
