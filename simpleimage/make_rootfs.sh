@@ -156,20 +156,11 @@ export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
 apt-get -y update
 apt-get install -y software-properties-common dirmngr
-apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers
-apt-add-repository -y ppa:ayufan/pine64-ppa
-if [[ "$DISTRO" == "jessie" ]]; then
-	REPO=xenial
-elif [[ "$DISTRO" == "stretch" ]]; then
-	REPO=xenial
-else
-	REPO="$DISTRO"
-fi
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BF428671
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0B3C3354
-add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu \$REPO main"
-add-apt-repository "deb http://ppa.launchpad.net/ayufan/rock64-ppa/ubuntu \$REPO main"
-curl -fsSL http://deb.ayufan.eu/orgs/ayufan-rock64/archive.key | apt-key add -
+add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu xenial main"
+add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu xenial main"
+curl -fsSL http://deb.ayufan.eu/orgs/ayufan-pine64/archive.key | apt-key add -
 apt-get -y update
 apt-get -y install sudo sunxi-disp-tool \
 	dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server \
