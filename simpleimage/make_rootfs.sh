@@ -157,7 +157,7 @@ locale-gen en_US.UTF-8
 apt-get -y update
 apt-get install -y software-properties-common dirmngr
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BF428671
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0B3C3354
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 56A3D45E
 add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu xenial main"
 add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu xenial main"
 curl -fsSL http://deb.ayufan.eu/orgs/ayufan-pine64/archive.key | apt-key add -
