@@ -155,7 +155,7 @@ set -ex
 export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
 apt-get -y update
-apt-get install -y software-properties-common
+apt-get install -y software-properties-common dirmngr
 apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers
 apt-add-repository -y ppa:ayufan/pine64-ppa
 if [[ "$DISTRO" == "jessie" ]]; then
