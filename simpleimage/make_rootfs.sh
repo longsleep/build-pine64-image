@@ -146,44 +146,38 @@ case $DISTRO in
 	xenial|sid|jessie|stretch)
 		rm "$DEST/etc/resolv.conf"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
-		if [ "$DISTRO" = "xenial" ]; then
-			DEB=ubuntu
-			DEBUSER=pine64
-			DEBUSERPW=pine64
-			ADDPPACMD="apt-get -y update && \
-				apt-get install -y software-properties-common && \
-				apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers && \
-				apt-add-repository -y ppa:ayufan/pine64-ppa \
-			"
-			EXTRADEBS="\
-				zram-config \
-				ubuntu-minimal \
-				sunxi-disp-tool \
-			"
-		elif [ "$DISTRO" = "sid" -o "$DISTRO" = "jessie" -o "$DISTRO" = "stretch" ]; then
-			DEB=debian
-			DEBUSER=pine64
-			DEBUSERPW=pine64
-			ADDPPACMD=""
-			EXTRADEBS="sudo"
-			ADDPPACMD=
-			DISPTOOLCMD=
-		else
-			echo "Unknown DISTRO=$DISTRO"
-			exit 2
-		fi
+		DEB=ubuntu
+		DEBUSER=pine64
+		DEBUSERPW=pine64
 		cat > "$DEST/second-phase" <<EOF
 #!/bin/sh
 set -ex
 export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
-$ADDPPACMD
+apt-get -y update
+apt-get install -y software-properties-common
+apt-add-repository -y ppa:longsleep/ubuntu-pine64-flavour-makers
+apt-add-repository -y ppa:ayufan/pine64-ppa
+if [[ "$DISTRO" == "jessie" ]]; then
+	REPO=xenial
+elif [[ "$DISTRO" == "stretch" ]]; then
+	REPO=xenial
+else
+	REPO="$DISTRO"
+fi
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BF428671
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0B3C3354
+add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu \$REPO main"
+add-apt-repository "deb http://ppa.launchpad.net/ayufan/rock64-ppa/ubuntu \$REPO main"
 curl -fsSL http://deb.ayufan.eu/orgs/ayufan-rock64/archive.key | apt-key add -
 apt-get -y update
-apt-get -y install dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server alsa-utils \
-	nano git build-essential vim jq wget ca-certificates htop figlet $EXTRADEBS
-apt-get -y remove --purge ureadahead
-apt-get -y update
+apt-get -y install sudo sunxi-disp-tool \
+	dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server \
+	alsa-utils nano git build-essential vim jq wget ca-certificates \
+	htop figlet gdisk parted
+if [[ "$DISTRO" == "xenial" || "$DISTRO" == "zesty" ]]; then
+	apt-get -y install landscape-common
+fi
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
 chown -R 1000:1000 /home/$DEBUSER
 echo "$DEBUSER:$DEBUSERPW" | chpasswd
@@ -232,6 +226,10 @@ EOF
 			i3)
 				do_chroot /usr/local/sbin/install_desktop.sh i3
 				do_chroot systemctl set-default graphical.target
+				;;
+
+			openmediavault)
+				do_chroot /usr/local/sbin/install_openmediavault.sh
 				;;
 		esac
 		do_chroot systemctl enable ssh-keygen

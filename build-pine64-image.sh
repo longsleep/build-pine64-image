@@ -35,6 +35,29 @@ if [ -z "$DISTRO" ]; then
 	DISTRO="xenial"
 fi
 
+case "$VARIANT" in
+    minimal)
+        SIZE=1024
+        ;;
+
+    i3)
+        SIZE=2048
+        ;;
+
+    mate)
+        SIZE=5120
+        ;;
+
+    openmediavault)
+        SIZE=2048
+        ;;
+
+    *)
+        echo "Unknown VARIANT: $VARIANT"
+        exit 1
+        ;;
+esac
+
 SIMPLEIMAGE=$(readlink -f "$SIMPLEIMAGE")
 KERNELTAR=$(readlink -f "$KERNELTAR")
 
