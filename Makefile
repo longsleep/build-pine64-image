@@ -103,7 +103,7 @@ BUILD_MODELS := pine64 pinebook sopine
 	pxz -f -3 $<
 
 %-$(RELEASE_NAME)-$(RELEASE).img: simple-image-pine64-$(RELEASE_NAME).img.xz linux-pine64-$(RELEASE_NAME).tar.xz linux-pine64-package-$(RELEASE_NAME).deb boot-tools
-	sudo bash rootfs/build-system-image.sh \
+	sudo bash ./build-pine64-image.sh \
 		"$(shell readlink -f $@)" \
 		"$(shell readlink -f $<)" \
 		"$(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)" \
