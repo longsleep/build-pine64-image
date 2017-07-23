@@ -99,6 +99,9 @@ BUILD_VARIANTS := minimal mate i3 openmediavault
 BUILD_ARCHS := arm64
 BUILD_MODELS := pine64 pinebook sopine
 
+%-$(RELEASE_NAME)-$(RELEASE).img.xz: %-$(RELEASE_NAME)-$(RELEASE).img
+	pxz -f -3 $<
+
 %-$(RELEASE_NAME)-$(RELEASE).img: simple-image-pine64-$(RELEASE_NAME).img.xz linux-pine64-$(RELEASE_NAME).tar.xz linux-pine64-package-$(RELEASE_NAME).deb boot-tools
 	sudo bash rootfs/build-system-image.sh \
 		"$(shell readlink -f $@)" \
