@@ -148,9 +148,6 @@ stretch-minimal-sopine: stretch-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEA
 .PHONY: stretch-minimal-pinebook
 stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
-.PHONY: stretch-i3-pinebook
-stretch-i3-pinebook: stretch-i3-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
 .PHONY: jessie-minimal-pinebook
 jessie-minimal-pinebook: jessie-minimal-pinebook-$(RELEASE_NAME)-$(RELEASE).img.xz
 
@@ -170,7 +167,7 @@ zesty-pinebook: zesty-minimal-pinebook zesty-mate-pinebook zesty-i3-pinebook
 xenial-pinebook: xenial-minimal-pinebook xenial-mate-pinebook xenial-i3-pinebook
 
 .PHONY: stretch-pinebook
-stretch-pinebook: stretch-minimal-pinebook stretch-i3-pinebook
+stretch-pinebook: stretch-minimal-pinebook
 
 .PHONY: linux-pinebook
 linux-pinebook: xenial-pinebook stretch-pinebook jessie-minimal-pinebook
