@@ -109,8 +109,8 @@ BUILD_MODELS := pine64 pinebook sopine
 		"$(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)" \
 		"$(shell readlink -f linux-pine64-package-$(RELEASE_NAME).deb)" \
 		"$(filter $(BUILD_SYSTEMS), $(subst -, ,$@))" \
-		"$(filter $(BUILD_VARIANTS), $(subst -, ,$@))" \
-		"$(filter $(BUILD_MODELS), $(subst -, ,$@))"
+		"$(filter $(BUILD_MODELS), $(subst -, ,$@))" \
+		"$(filter $(BUILD_VARIANTS), $(subst -, ,$@))"
 
 .PHONY: kernel-tarball
 kernel-tarball: linux-pine64-$(RELEASE_NAME).tar.xz
