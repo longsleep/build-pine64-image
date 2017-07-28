@@ -1,0 +1,5 @@
+#!/bin/sh
+
+test -x /usr/bin/figlet || exit 0
+
+figlet $(hostname)
