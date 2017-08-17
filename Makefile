@@ -118,13 +118,10 @@ kernel-tarball: linux-pine64-$(RELEASE_NAME).tar.xz
 .PHONY: linux-package
 linux-package: linux-pine64-package-$(RELEASE_NAME).deb
 
-.PHONY: simple-image-pinebook-$(RELEASE_NAME).img.xz
 simple-image-pinebook: simple-image-pinebook-$(RELEASE_NAME).img.xz
 
-.PHONY: simple-image-pine64-$(RELEASE_NAME).img.xz
 simple-image-pine64: simple-image-pine64-$(RELEASE_NAME).img.xz
 
-.PHONY: simple-image-sopine-$(RELEASE_NAME).img.xz
 simple-image-sopine: simple-image-sopine-$(RELEASE_NAME).img.xz
 
 .PHONY: simple-image
