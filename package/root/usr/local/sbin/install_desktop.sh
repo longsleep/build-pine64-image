@@ -5,7 +5,7 @@ set -e
 DESKTOP="$1"
 
 if [ -z "$DESKTOP" ]; then
-	echo "Usage: $0 <mate|i3>"
+	echo "Usage: $0 <mate|i3|elementary>"
 	exit 1
 fi
 
@@ -69,6 +69,18 @@ case $DESKTOP in
 			suckless-tools
 			network-manager
 			pulseaudio
+		)
+		;;
+
+	elementary)
+		add-apt-repository ppa:elementary-os/stable
+		apt-get update
+
+		PACKAGES+=(
+			elementary-theme
+			elementary-icon-theme
+			elementary-default-settings
+			elementary-desktop
 		)
 		;;
 
