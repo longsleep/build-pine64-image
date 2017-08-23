@@ -102,10 +102,15 @@ BUILD_MODELS := pine64 pinebook sopine
 %-$(RELEASE_NAME)-$(RELEASE).img.xz: %-$(RELEASE_NAME)-$(RELEASE).img
 	pxz -f -3 $<
 
-%-$(RELEASE_NAME)-$(RELEASE).img: simple-image-pine64-$(RELEASE_NAME).img.xz linux-pine64-$(RELEASE_NAME).tar.xz linux-pine64-package-$(RELEASE_NAME).deb boot-tools
+%-$(RELEASE_NAME)-$(RELEASE).img:	simple-image-pine64-$(RELEASE_NAME).img.xz \
+									simple-image-pinebook-$(RELEASE_NAME).img.xz \
+									simple-image-sopine-$(RELEASE_NAME).img.xz \
+									linux-pine64-$(RELEASE_NAME).tar.xz \
+									linux-pine64-package-$(RELEASE_NAME).deb \
+									boot-tools
 	sudo bash ./build-pine64-image.sh \
 		"$(shell readlink -f $@)" \
-		"$(shell readlink -f $<)" \
+		"$(shell readlink -f simple-image-$(filter $(BUILD_MODELS), $(subst -, ,$@))-$(RELEASE_NAME).img.xz)" \
 		"$(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)" \
 		"$(shell readlink -f linux-pine64-package-$(RELEASE_NAME).deb)" \
 		"$(filter $(BUILD_SYSTEMS), $(subst -, ,$@))" \
