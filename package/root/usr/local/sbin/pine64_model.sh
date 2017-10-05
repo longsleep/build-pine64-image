@@ -2,4 +2,4 @@
 
 set -e
 
-cat /etc/pine64-model
+cat /etc/pine64_model
