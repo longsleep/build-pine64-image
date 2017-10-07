@@ -1,7 +1,7 @@
 export RELEASE_NAME ?= 0.1~dev
 export RELEASE ?= 1
-export LINUX_BRANCH ?= my-hacks-1.2-with-mmc3
-export BOOT_TOOLS_BRANCH ?= with-drm-mmc3
+export LINUX_BRANCH ?= my-hacks-1.2
+export BOOT_TOOLS_BRANCH ?= with-drm
 LINUX_LOCALVERSION ?= -ayufan-$(RELEASE)
 
 all: linux-pinebook linux-pine64 linux-sopine
