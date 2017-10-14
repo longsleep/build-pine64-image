@@ -165,7 +165,7 @@ apt-get -y update
 apt-get -y install sudo sunxi-disp-tool \
 	dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server \
 	alsa-utils nano git build-essential vim jq wget ca-certificates \
-	htop figlet gdisk parted
+	htop figlet gdisk parted rsync
 if [[ "$DISTRO" == "xenial" || "$DISTRO" == "zesty" ]]; then
 	apt-get -y install landscape-common
 fi
