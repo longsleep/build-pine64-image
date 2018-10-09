@@ -181,7 +181,7 @@ xenial-pinebook: xenial-minimal-pinebook xenial-mate-pinebook xenial-i3-pinebook
 stretch-pinebook: stretch-minimal-pinebook
 
 .PHONY: linux-pinebook
-linux-pinebook: simple-image-pinebook xenial-pinebook stretch-pinebook jessie-minimal-pinebook
+linux-pinebook: simple-image-pinebook xenial-pinebook stretch-pinebook
 
 .PHONY: zesty-minimal-pine64
 zesty-minimal-pine64: zesty-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
@@ -190,7 +190,7 @@ zesty-minimal-pine64: zesty-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).
 xenial-minimal-pine64: xenial-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: linux-pine64
-linux-pine64: simple-image-pine64 zesty-minimal-pine64 xenial-minimal-pine64 stretch-minimal-pine64 jessie-minimal-pine64
+linux-pine64: simple-image-pine64 xenial-minimal-pine64 stretch-minimal-pine64
 
 .PHONY: zesty-minimal-sopine
 zesty-minimal-sopine: zesty-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
@@ -199,4 +199,4 @@ zesty-minimal-sopine: zesty-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).
  xenial-minimal-sopine: xenial-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: linux-sopine
-linux-sopine: simple-image-sopine zesty-minimal-sopine xenial-minimal-sopine stretch-minimal-sopine jessie-minimal-sopine
+linux-sopine: simple-image-sopine xenial-minimal-sopine stretch-minimal-sopine
