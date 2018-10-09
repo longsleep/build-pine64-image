@@ -47,7 +47,7 @@ linux-pine64-$(RELEASE_NAME).tar: linux/arch/arm64/boot/Image boot-tools kernel/
 		bash ./make_kernel_tarball.sh $(shell readlink -f "$@")
 
 package/rtk_bt/.git:
-	git clone --single-branch --depth=1 https://github.com/NextThingCo/rtl8723ds_bt package/rtk_bt
+	git clone --single-branch --depth=1 https://github.com/ayufan-pine64/rtl8723ds_bt package/rtk_bt
 
 package/rtk_bt/rtk_hciattach/rtk_hciattach: package/rtk_bt/.git
 	make -C package/rtk_bt/rtk_hciattach CC="ccache aarch64-linux-gnu-gcc"
