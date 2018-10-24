@@ -162,7 +162,7 @@ stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(R
 stretch-openmediavault-pine64: stretch-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: bionic-pinebook
-bionic-pinebook: bionic-mate-pinebook bionic-lxde-pinebook
+bionic-pinebook: bionic-lxde-pinebook
 
 .PHONY: stretch-pinebook
 stretch-pinebook: stretch-minimal-pinebook
