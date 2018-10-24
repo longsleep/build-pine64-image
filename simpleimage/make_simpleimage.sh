@@ -23,7 +23,7 @@ kernel_tarball="$3"
 model="$4"
 
 if [ -z "$out" ]; then
-	echo "Usage: $0 <image-file.img> [disk size in MiB] [<kernel-tarball>] [<pine64|so|pinebook>]"
+	echo "Usage: $0 <image-file.img> [disk size in MiB] [<kernel-tarball>] [<pine64|so|pinebook|pinebook-1080p>]"
 	exit 1
 fi
 

@@ -224,7 +224,7 @@ EOF
 				;;
 		esac
 		do_chroot systemctl enable ssh-keygen
-		if [ "$MODEL" = "pinebook" ]; then
+		if [ "$MODEL" = "pinebook" ] || [ "$MODEL" = "pinebook-1080p" ]; then
 			do_chroot systemctl enable pinebook-headphones
 		fi
 		sed -i 's|After=rc.local.service|#\0|;' "$DEST/lib/systemd/system/serial-getty@.service"
