@@ -100,7 +100,7 @@ simple-image-pinebook-1080p-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).ta
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook-1080p.bin && \
 		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)
 
-BUILD_SYSTEMS := xenial zesty jessie stretch
+BUILD_SYSTEMS := xenial stretch
 BUILD_VARIANTS := minimal mate i3 openmediavault
 BUILD_ARCHS := arm64
 BUILD_MODELS := pine64 pinebook pinebook-1080p sopine
@@ -140,18 +140,6 @@ simple-image-sopine: simple-image-sopine-$(RELEASE_NAME).img.xz
 .PHONY: simple-image
 simple-image: simple-image-pinebook simple-image-pine64 simple-image-sopine
 
-.PHONY: zesty-minimal-pinebook
-zesty-minimal-pinebook: zesty-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	zesty-minimal-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: xenial-mate-pinebook
-zesty-mate-pinebook: zesty-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	zesty-mate-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: xenial-i3-pinebook
-zesty-i3-pinebook: zesty-i3-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	zesty-i3-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
 .PHONY: xenial-minimal-pinebook
 xenial-minimal-pinebook: xenial-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
 	xenial-minimal-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
@@ -174,21 +162,8 @@ stretch-minimal-sopine: stretch-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEA
 stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
 	stretch-minimal-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
-.PHONY: jessie-minimal-pinebook
-jessie-minimal-pinebook: jessie-minimal-pinebook-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	jessie-minimal-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: jessie-minimal-sopine
-jessie-minimal-sopine: jessie-minimal-sopine-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: jessie-minimal-pine64
-jessie-minimal-pine64: jessie-minimal-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: jessie-openmediavault-pine64
-jessie-openmediavault-pine64: jessie-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
-
-.PHONY: zesty-pinebook
-zesty-pinebook: zesty-minimal-pinebook zesty-mate-pinebook zesty-i3-pinebook
+.PHONY: stretch-openmediavault-pine64
+stretch-openmediavault-pine64: stretch-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: xenial-pinebook
 xenial-pinebook: xenial-minimal-pinebook xenial-mate-pinebook xenial-i3-pinebook
@@ -199,20 +174,14 @@ stretch-pinebook: stretch-minimal-pinebook
 .PHONY: linux-pinebook
 linux-pinebook: simple-image-pinebook xenial-pinebook stretch-pinebook
 
-.PHONY: zesty-minimal-pine64
-zesty-minimal-pine64: zesty-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
 .PHONY: xenial-minimal-pine64
 xenial-minimal-pine64: xenial-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: linux-pine64
 linux-pine64: simple-image-pine64 xenial-minimal-pine64 stretch-minimal-pine64
 
-.PHONY: zesty-minimal-sopine
-zesty-minimal-sopine: zesty-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
-
 .PHONY: xenial-minimal-sopine
- xenial-minimal-sopine: xenial-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+xenial-minimal-sopine: xenial-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: linux-sopine
 linux-sopine: simple-image-sopine xenial-minimal-sopine stretch-minimal-sopine

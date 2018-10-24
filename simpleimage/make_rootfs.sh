@@ -83,12 +83,12 @@ case $DISTRO in
 		ROOTFS="http://archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 		TAR_OPTIONS="-z"
 		;;
-	xenial|zesty)
+	xenial|bionic)
 		version=$(curl -s https://api.github.com/repos/$RELEASE_REPO/releases/latest | jq -r ".tag_name")
 		ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/ubuntu-${DISTRO}-${VARIANT}-${version}-${BUILD_ARCH}.tar.xz"
 		TAR_OPTIONS="-J --strip-components=1 binary"
 		;;
-	sid|jessie|stretch)
+	sid|stretch)
 		version=$(curl -s https://api.github.com/repos/$RELEASE_REPO/releases/latest | jq -r ".tag_name")
 		ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/debian-${DISTRO}-${VARIANT}-${version}-${BUILD_ARCH}.tar.xz"
 		TAR_OPTIONS="-J --strip-components=1 binary"
@@ -143,7 +143,7 @@ case $DISTRO in
 		echo "No longer supported"
 		exit 1
 		;;
-	xenial|sid|jessie|stretch)
+	xenial|bionic|sid|jessie|stretch)
 		rm "$DEST/etc/resolv.conf"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
 		DEB=ubuntu
@@ -166,7 +166,7 @@ apt-get -y install sudo sunxi-disp-tool \
 	dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server \
 	alsa-utils nano git build-essential vim jq wget ca-certificates \
 	htop figlet gdisk parted rsync
-if [[ "$DISTRO" == "xenial" || "$DISTRO" == "zesty" ]]; then
+if [[ "$DISTRO" == "xenial" || "$DISTRO" == "bionic" ]]; then
 	apt-get -y install landscape-common
 fi
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
