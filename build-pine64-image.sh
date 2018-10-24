@@ -48,6 +48,10 @@ case "$VARIANT" in
         SIZE=5120
         ;;
 
+    lxde)
+        SIZE=3500
+        ;;
+
     openmediavault)
         SIZE=2048
         ;;

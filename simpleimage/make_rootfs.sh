@@ -86,11 +86,13 @@ case $DISTRO in
 	xenial|bionic)
 		version=$(curl -s https://api.github.com/repos/$RELEASE_REPO/releases/latest | jq -r ".tag_name")
 		ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/ubuntu-${DISTRO}-${VARIANT}-${version}-${BUILD_ARCH}.tar.xz"
+		FALLBACK_ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/ubuntu-${DISTRO}-minimal-${version}-${BUILD_ARCH}.tar.xz"
 		TAR_OPTIONS="-J --strip-components=1 binary"
 		;;
 	sid|stretch)
 		version=$(curl -s https://api.github.com/repos/$RELEASE_REPO/releases/latest | jq -r ".tag_name")
 		ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/debian-${DISTRO}-${VARIANT}-${version}-${BUILD_ARCH}.tar.xz"
+		FALLBACK_ROOTFS="https://github.com/$RELEASE_REPO/releases/download/${version}/debian-${DISTRO}-minimal-${version}-${BUILD_ARCH}.tar.xz"
 		TAR_OPTIONS="-J --strip-components=1 binary"
 		;;
 	*)
@@ -99,13 +101,19 @@ case $DISTRO in
 		;;
 esac
 
-mkdir -p $BUILD
-TARBALL="$TEMP/$(basename $ROOTFS)"
+CACHE_ROOT="${CACHE_ROOT:-tmp}"
+mkdir -p "$CACHE_ROOT"
+TARBALL="${CACHE_ROOT}/$(basename $ROOTFS)"
 
-mkdir -p "$BUILD"
 if [ ! -e "$TARBALL" ]; then
 	echo "Downloading $DISTRO rootfs tarball ..."
-	wget -O "$TARBALL" "$ROOTFS"
+	pushd "$CACHE_ROOT"
+	if ! flock "$(basename "$ROOTFS").lock" wget -c "$ROOTFS"; then
+		TARBALL="${CACHE_ROOT}/$(basename "$FALLBACK_ROOTFS")"
+		echo "Downloading fallback $DISTRO rootfs tarball ..."
+		flock "$(basename "$FALLBACK_ROOTFS").lock" wget -c "$FALLBACK_ROOTFS"
+	fi
+	popd
 fi
 
 # Extract with BSD tar
@@ -113,7 +121,6 @@ echo -n "Extracting ... "
 set -x
 tar -xf "$TARBALL" -C "$DEST" $TAR_OPTIONS
 echo "OK"
-rm -f "$TARBALL"
 
 # Add qemu emulation.
 cp /usr/bin/qemu-aarch64-static "$DEST/usr/bin"
