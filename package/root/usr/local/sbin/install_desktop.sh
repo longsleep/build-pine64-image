@@ -5,13 +5,13 @@ set -e
 DESKTOP="$1"
 
 if [ -z "$DESKTOP" ]; then
-	echo "Usage: $0 <mate|i3|elementary>"
+	echo "Usage: $0 <mate|i3|gnome|xfce4|lxde>"
 	exit 1
 fi
 
 DISTRO=""
 if hash apt-get 2>/dev/null; then
-	DISTRO=debian
+	DISTRO=$(lsb_release -i -s)
 fi
 
 if [ -z "$DISTRO" ]; then
@@ -45,11 +45,42 @@ PACKAGES=(
 	chromium-browser
 )
 
-# Add packages based on desktop selection.
-case $DESKTOP in
-	mate)
+# Additional packages
+PACKAGES+=(
+	xserver-xorg-input-all
+	xfonts-base
+	rxvt-unicode-lite
+	suckless-tools
+	network-manager
+	pulseaudio
+)
+
+case $DISTRO in
+	Ubuntu)
 		PACKAGES+=(
-			ubuntu-mate-core
+			chromium-browser
+			firefox
+			gstreamer1.0-rockchip1
+		)
+		;;
+
+	Debian)
+		PACKAGES+=(
+			chromium
+			chromium-widevine
+		)
+		;;
+
+	*)
+		echo "Error: unsupported desktop environment $DESKTOP-$DISTRO"
+		exit 2
+		;;
+esac
+
+# Add packages based on desktop selection.
+case $DESKTOP-$DISTRO in
+	mate-Ubuntu)
+		PACKAGES+=(
 			ubuntu-mate-desktop
 			ubuntu-mate-lightdm-theme
 			ubuntu-mate-wallpapers-xenial
@@ -57,30 +88,50 @@ case $DESKTOP in
 		)
 		;;
 
-	i3|i3wm)
+	mate-Debian)
 		PACKAGES+=(
-			xserver-xorg-input-all
-			xfonts-base
-			slim
-			rxvt-unicode-lite
-			i3
-			i3status
-			i3lock
-			suckless-tools
-			network-manager
-			pulseaudio
+			mate-desktop-environment
+			mate-desktop-environment-extras
+			desktop-base
+			lightdm
 		)
 		;;
 
-	elementary)
-		add-apt-repository ppa:elementary-os/stable
-		apt-get update
-
+	gnome-Ubuntu)
 		PACKAGES+=(
-			elementary-theme
-			elementary-icon-theme
-			elementary-default-settings
-			elementary-desktop
+			ubuntu-gnome-desktop
+			ubuntu-gnome-wallpapers-xenial
+		)
+		;;
+
+	gnome-Debian)
+		PACKAGES+=(
+			gnome
+			desktop-base
+		)
+		;;
+
+	i3-Ubuntu|i3-Debian)
+		PACKAGES+=(
+			i3
+			i3status
+			i3lock
+			slim
+		)
+		;;
+
+	xfce4-Ubuntu|xfce4-Debian)
+		PACKAGES+=(
+			xfce4
+			xfce4-goodies
+			slim
+		)
+		;;
+
+	lxde-Ubuntu|lxde-Debian)
+		PACKAGES+=(
+			lxde
+			lxdm
 		)
 		;;
 
