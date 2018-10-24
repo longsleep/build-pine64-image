@@ -54,8 +54,8 @@ case "$1" in
         REPO="ayufan-pine64/$1"
         if [[ "$(cat /etc/pine64_model)" == "pinebook" ]]; then
             PREFIX="$1-pine-a64-pinebook-v"
-        elif [[ "$(cat /etc/pine64_model)" == "pinebook-1080p" ]]; then
-            PREFIX="$1-pine-a64-pinebook-1080p-v"
+        elif [[ "$(cat /etc/pine64_model)" == "pinebook1080p" ]]; then
+            PREFIX="$1-pine-a64-pinebook1080p-v"
         elif [[ "$(cat /etc/pine64_model)" == "sopine" ]]; then
             PREFIX="$1-pine-a64-sopine-v"
         else

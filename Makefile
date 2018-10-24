@@ -94,23 +94,23 @@ simple-image-pinebook-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz b
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook.bin && \
 		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-pinebook
 
-simple-image-pinebook-1080p-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boot-tools
+simple-image-pinebook1080p-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boot-tools
 	cd simpleimage && \
-		export boot0=../boot-tools/boot/pine64/boot0-pine64-pinebook-1080p.bin && \
-		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook-1080p.bin && \
-		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-pinebook-1080p
+		export boot0=../boot-tools/boot/pine64/boot0-pine64-pinebook1080p.bin && \
+		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook1080p.bin && \
+		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-pinebook1080p
 
 BUILD_SYSTEMS := bionic stretch
 BUILD_VARIANTS := minimal mate i3 lxde openmediavault
 BUILD_ARCHS := arm64
-BUILD_MODELS := pine64 pinebook pinebook-1080p sopine
+BUILD_MODELS := pine64 pinebook pinebook1080p sopine
 
 %-$(RELEASE_NAME)-$(RELEASE).img.xz: %-$(RELEASE_NAME)-$(RELEASE).img
 	pxz -f -3 $<
 
 %-$(RELEASE_NAME)-$(RELEASE).img:	simple-image-pine64-$(RELEASE_NAME).img.xz \
 									simple-image-pinebook-$(RELEASE_NAME).img.xz \
-									simple-image-pinebook-1080p-$(RELEASE_NAME).img.xz \
+									simple-image-pinebook1080p-$(RELEASE_NAME).img.xz \
 									simple-image-sopine-$(RELEASE_NAME).img.xz \
 									linux-pine64-$(RELEASE_NAME).tar.xz \
 									linux-pine64-package-$(RELEASE_NAME).deb \
@@ -131,7 +131,7 @@ kernel-tarball: linux-pine64-$(RELEASE_NAME).tar.xz
 linux-package: linux-pine64-package-$(RELEASE_NAME).deb
 
 simple-image-pinebook: simple-image-pinebook-$(RELEASE_NAME).img.xz \
-	simple-image-pinebook-1080p-$(RELEASE_NAME).img.xz
+	simple-image-pinebook1080p-$(RELEASE_NAME).img.xz
 
 simple-image-pine64: simple-image-pine64-$(RELEASE_NAME).img.xz
 
@@ -142,11 +142,11 @@ simple-image: simple-image-pinebook simple-image-pine64 simple-image-sopine
 
 .PHONY: bionic-mate-pinebook
 bionic-mate-pinebook: bionic-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	bionic-mate-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+	bionic-mate-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: bionic-lxde-pinebook
 bionic-lxde-pinebook: bionic-lxde-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	bionic-lxde-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+	bionic-lxde-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: stretch-minimal-pine64
 stretch-minimal-pine64: stretch-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
@@ -156,7 +156,7 @@ stretch-minimal-sopine: stretch-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEA
 
 .PHONY: stretch-minimal-pinebook
 stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	stretch-minimal-pinebook-1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+	stretch-minimal-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: stretch-openmediavault-pine64
 stretch-openmediavault-pine64: stretch-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz

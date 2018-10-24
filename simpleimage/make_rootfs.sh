@@ -240,7 +240,7 @@ EOF
 				;;
 		esac
 		do_chroot systemctl enable ssh-keygen
-		if [ "$MODEL" = "pinebook" ] || [ "$MODEL" = "pinebook-1080p" ]; then
+		if [ "$MODEL" = "pinebook" ] || [ "$MODEL" = "pinebook1080p" ]; then
 			do_chroot systemctl enable pinebook-headphones
 		fi
 		sed -i 's|After=rc.local.service|#\0|;' "$DEST/lib/systemd/system/serial-getty@.service"
@@ -296,6 +296,9 @@ elif [ -n "$LINUX" -a "$LINUX" != "-" ]; then
 		rm -f "$BOOT/uEnv.txt"
 		cp -RLp $TEMP/kernel/boot/* "$BOOT/"
 		mv "$BOOT/uEnv.txt.in" "$BOOT/uEnv.txt"
+		if [[ "$model" == "pinebook" ]] || [[ "$model" == "pinebook1080p" ]]; then
+			echo "pine64_model=$model" >> "$BOOT/uEnv.txt"
+		fi
 	fi
 	cp -RLp $TEMP/kernel/lib/* "$DEST/lib/" 2>/dev/null || true
 	cp -RLp $TEMP/kernel/usr/* "$DEST/usr/"
