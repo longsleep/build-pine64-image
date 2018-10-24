@@ -77,18 +77,11 @@ if [ -n "$kernel_tarball" ]; then
 	echo "Using Kernel from $kernel_tarball ..."
 	tar -C $temp -xJf "$kernel_tarball"
 	mv $temp/boot/uEnv.txt.in $temp/boot/uEnv.txt
-	if [[ -n "$model" ]]; then
-		echo "pine64_model=$model" >> $temp/boot/uEnv.txt
-	fi
 	mcopy -sm -i ${out}1 ${temp}/boot/* ::
 elif [ -e "${kernel}/pine64/Image" -a -e "${kernel}/pine64/sun50i-a64-pine64-plus.dtb" ]; then
-	cp ${kernel}/uEnv.txt ${temp}/
-	if [[ -n "$model" ]]; then
-		echo "pine64_model=$model" >> ${temp}/uEnv.txt
-	fi
 	mcopy -sm -i ${out}1 ${kernel}/pine64 ::
 	mcopy -m -i ${out}1 ${kernel}/initrd.img :: || true
-	mcopy -m -i ${out}1 ${temp}/uEnv.txt :: || true
+	mcopy -m -i ${out}1 ${kernel}/uEnv.txt :: || true
 fi
 dd if=${out}1 conv=notrunc oflag=append bs=1M seek=$((part_position/1024)) of="$out"
 rm -f ${out}1
