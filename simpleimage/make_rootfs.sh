@@ -157,7 +157,7 @@ case $DISTRO in
 		DEBUSER=pine64
 		DEBUSERPW=pine64
 		cat > "$DEST/second-phase" <<EOF
-#!/bin/sh
+#!/bin/bash
 set -ex
 export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
@@ -169,9 +169,8 @@ if [[ "$DISTRO" == "stretch" ]]; then
 	add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu xenial main"
 	add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu xenial main"
 else
-	add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu $DISTRO main"
 	add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu $DISTRO main"
-end
+fi
 curl -fsSL http://deb.ayufan.eu/orgs/ayufan-pine64/archive.key | apt-key add -
 apt-get -y update
 apt-get -y install sudo sunxi-disp-tool \

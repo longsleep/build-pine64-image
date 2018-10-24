@@ -111,7 +111,7 @@ mount /dev/mapper/${DEVICENAME}p1 "$TEMP/boot"
 mount /dev/mapper/${DEVICENAME}p2 "$TEMP/rootfs"
 
 sleep 2
-(cd simpleimage && sh ./make_rootfs.sh "$TEMP/rootfs" "$KERNELTAR" "$PACKAGEDEB" "$DISTRO" "$TEMP/boot" "$MODEL" "$VARIANT")
+(cd simpleimage && ./make_rootfs.sh "$TEMP/rootfs" "$KERNELTAR" "$PACKAGEDEB" "$DISTRO" "$TEMP/boot" "$MODEL" "$VARIANT")
 
 mv -v "$TEMP/$IMAGE" "$OUT_IMAGE"
 

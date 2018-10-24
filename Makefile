@@ -80,25 +80,25 @@ simple-image-pine64-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boo
 	cd simpleimage && \
 		export boot0=../boot-tools/boot/pine64/boot0-pine64-plus.bin && \
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-plus.bin && \
-		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)
+		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-plus
 
 simple-image-sopine-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boot-tools
 	cd simpleimage && \
 		export boot0=../boot-tools/boot/pine64/boot0-pine64-sopine.bin && \
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-sopine.bin && \
-		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)
+		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-sopine
 
 simple-image-pinebook-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boot-tools
 	cd simpleimage && \
 		export boot0=../boot-tools/boot/pine64/boot0-pine64-pinebook.bin && \
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook.bin && \
-		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)
+		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-pinebook
 
 simple-image-pinebook-1080p-$(RELEASE_NAME).img: linux-pine64-$(RELEASE_NAME).tar.xz boot-tools
 	cd simpleimage && \
 		export boot0=../boot-tools/boot/pine64/boot0-pine64-pinebook-1080p.bin && \
 		export uboot=../boot-tools/boot/pine64/u-boot-pine64-pinebook-1080p.bin && \
-		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz)
+		bash ./make_simpleimage.sh $(shell readlink -f "$@") 150 $(shell readlink -f linux-pine64-$(RELEASE_NAME).tar.xz) pine64-pinebook-1080p
 
 BUILD_SYSTEMS := bionic stretch
 BUILD_VARIANTS := minimal mate i3 lxde openmediavault

@@ -28,4 +28,6 @@
 /snappy/gadget/boot-assets
 /boot-tools/
 /*.deb
-
+/*.xz
+/*.img
+tmp/
