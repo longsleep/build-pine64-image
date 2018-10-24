@@ -16,9 +16,10 @@ usage() {
     echo "$ $0 <system> [version]"
     echo ""
     echo "Systems:"
-    echo " - xenial-minimal (https://github.com/ayufan-pine64/linux-build/releases)"
-    echo " - xenial-mate (https://github.com/ayufan-pine64/linux-build/releases)"
-    echo " - xenial-i3 (https://github.com/ayufan-pine64/linux-build/releases)"
+    echo " - xenial|bionic-minimal (https://github.com/ayufan-pine64/linux-build/releases)"
+    echo " - xenial|bionic-mate (https://github.com/ayufan-pine64/linux-build/releases)"
+    echo " - xenial|bionic-lxde (https://github.com/ayufan-pine64/linux-build/releases)"
+    echo " - xenial|bionic-i3 (https://github.com/ayufan-pine64/linux-build/releases)"
     echo " - android-7.0 (https://github.com/ayufan-pine64/android-7.0/releases)"
     echo " - android-7.1 (https://github.com/ayufan-pine64/android-7.1/releases)"
     echo ""
@@ -42,7 +43,7 @@ if [[ ! -e /dev/mmcblk1 ]]; then
 fi
 
 case "$1" in
-    xenial-minimal|xenial-mate|xenial-i3)
+    xenial-*|bionic-*)
         REPO="ayufan-pine64/linux-build"
         PREFIX="$1-$(cat /etc/pine64_model)-bspkernel-"
         SUFFIX="-[0-9]*.img.xz"

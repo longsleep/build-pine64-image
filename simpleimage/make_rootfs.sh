@@ -158,8 +158,13 @@ apt-get -y update
 apt-get install -y software-properties-common dirmngr
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BF428671
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 56A3D45E
-add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu xenial main"
-add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu xenial main"
+if [[ "$DISTRO" == "stretch" ]]; then
+	add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu xenial main"
+	add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu xenial main"
+else
+	add-apt-repository "deb http://ppa.launchpad.net/longsleep/ubuntu-pine64-flavour-makers/ubuntu $DISTRO main"
+	add-apt-repository "deb http://ppa.launchpad.net/ayufan/pine64-ppa/ubuntu $DISTRO main"
+end
 curl -fsSL http://deb.ayufan.eu/orgs/ayufan-pine64/archive.key | apt-key add -
 apt-get -y update
 apt-get -y install sudo sunxi-disp-tool \
@@ -211,6 +216,11 @@ EOF
 		case "$VARIANT" in
 			mate)
 				do_chroot /usr/local/sbin/install_desktop.sh mate
+				do_chroot systemctl set-default graphical.target
+				;;
+
+			lxde)
+				do_chroot /usr/local/sbin/install_desktop.sh lxde
 				do_chroot systemctl set-default graphical.target
 				;;
 
