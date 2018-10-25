@@ -16,8 +16,8 @@ linux/.config: linux/.git
 	touch linux/.config
 
 linux/arch/arm64/boot/Image: linux/.config
-	make -C linux ARCH=arm64 CROSS_COMPILE="ccache aarch64-linux-gnu-" -j4 LOCALVERSION=$(LINUX_LOCALVERSION) Image
-	make -C linux ARCH=arm64 CROSS_COMPILE="ccache aarch64-linux-gnu-" -j4 LOCALVERSION=$(LINUX_LOCALVERSION) modules
+	make -C linux ARCH=arm64 CROSS_COMPILE="ccache aarch64-linux-gnu-" -j$(shell nproc) LOCALVERSION=$(LINUX_LOCALVERSION) Image
+	make -C linux ARCH=arm64 CROSS_COMPILE="ccache aarch64-linux-gnu-" -j$(shell nproc) LOCALVERSION=$(LINUX_LOCALVERSION) modules
 	make -C linux LOCALVERSION=$(LINUX_LOCALVERSION) M=modules/gpu/mali400/kernel_mode/driver/src/devicedrv/mali \
 		ARCH=arm64 CROSS_COMPILE="ccache aarch64-linux-gnu-" \
 		CONFIG_MALI400=m CONFIG_MALI450=y CONFIG_MALI400_PROFILING=y \
@@ -140,9 +140,9 @@ simple-image-sopine: simple-image-sopine-$(RELEASE_NAME).img.xz
 .PHONY: simple-image
 simple-image: simple-image-pinebook simple-image-pine64 simple-image-sopine
 
-.PHONY: bionic-mate-pinebook
-bionic-mate-pinebook: bionic-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	bionic-mate-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+.PHONY: xenial-mate-pinebook
+xenial-mate-pinebook: xenial-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
+	xenial-mate-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: bionic-lxde-pinebook
 bionic-lxde-pinebook: bionic-lxde-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
@@ -161,6 +161,9 @@ stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(R
 .PHONY: stretch-openmediavault-pine64
 stretch-openmediavault-pine64: stretch-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
 
+.PHONY: xenial-pinebook
+xenial-pinebook: xenial-mate-pinebook
+
 .PHONY: bionic-pinebook
 bionic-pinebook: bionic-lxde-pinebook
 
@@ -168,7 +171,7 @@ bionic-pinebook: bionic-lxde-pinebook
 stretch-pinebook: stretch-minimal-pinebook
 
 .PHONY: linux-pinebook
-linux-pinebook: simple-image-pinebook bionic-pinebook stretch-pinebook
+linux-pinebook: simple-image-pinebook bionic-pinebook xenial-pinebook stretch-pinebook
 
 .PHONY: bionic-minimal-pine64
 bionic-minimal-pine64: bionic-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
@@ -181,3 +184,8 @@ bionic-minimal-sopine: bionic-minimal-sopine-bspkernel-$(RELEASE_NAME)-$(RELEASE
 
 .PHONY: linux-sopine
 linux-sopine: simple-image-sopine bionic-minimal-sopine stretch-minimal-sopine
+
+.PHONY: shell
+shell:
+	@docker build -t build-environment:build-pine64-image build-environment/
+	@docker run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) --privileged build-environment:build-pine64-image
