@@ -151,7 +151,7 @@ case $DISTRO in
 		exit 1
 		;;
 	xenial|bionic|sid|jessie|stretch)
-		rm "$DEST/etc/resolv.conf"
+		mv "$DEST/etc/resolv.conf" "$DEST/etc/resolv.conf.bak"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
 		DEB=ubuntu
 		DEBUSER=pine64
@@ -247,7 +247,7 @@ EOF
 		rm -f "$DEST/second-phase"
 		rm -f "$DEST/etc/resolv.conf"
 		rm -f "$DEST"/etc/ssh/ssh_host_*
-		do_chroot ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
+		mv "$DEST/etc/resolv.conf.bak" "$DEST/etc/resolv.conf"
 		do_chroot apt-get -y autoremove
 		do_chroot apt-get clean
 		;;
