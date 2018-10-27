@@ -250,6 +250,7 @@ EOF
 		mv "$DEST/etc/resolv.conf.bak" "$DEST/etc/resolv.conf"
 		do_chroot apt-get -y autoremove
 		do_chroot apt-get clean
+		do_chroot pine64_enable_sunxidrm.sh
 		;;
 	*)
 		;;
