@@ -223,16 +223,19 @@ EOF
 			mate)
 				do_chroot /usr/local/sbin/install_desktop.sh mate
 				do_chroot systemctl set-default graphical.target
+				do_chroot pine64_enable_sunxidrm.sh
 				;;
 
 			lxde)
 				do_chroot /usr/local/sbin/install_desktop.sh lxde
 				do_chroot systemctl set-default graphical.target
+				do_chroot pine64_enable_sunxidrm.sh
 				;;
 
 			i3)
 				do_chroot /usr/local/sbin/install_desktop.sh i3
 				do_chroot systemctl set-default graphical.target
+				do_chroot pine64_enable_sunxidrm.sh
 				;;
 
 			openmediavault)
@@ -250,7 +253,6 @@ EOF
 		mv "$DEST/etc/resolv.conf.bak" "$DEST/etc/resolv.conf"
 		do_chroot apt-get -y autoremove
 		do_chroot apt-get clean
-		do_chroot pine64_enable_sunxidrm.sh
 		;;
 	*)
 		;;
