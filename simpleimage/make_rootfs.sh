@@ -77,6 +77,9 @@ case $DISTRO in
 	xenial)
 		ROOTFS="http://cdimage.ubuntu.com/ubuntu-base/releases/16.04.5/release/ubuntu-base-16.04.5-base-arm64.tar.gz"
 		;;
+	bionic)
+		ROOTFS="http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.1/release/ubuntu-base-18.04.1-base-arm64.tar.gz"
+		;;
 	sid|jessie)
 		ROOTFS="${DISTRO}-base-arm64.tar.gz"
 		METHOD="debootstrap"
@@ -278,10 +281,10 @@ EOF
 		rm -f "$DEST/etc/resolv.conf"
 		mv "$DEST/etc/resolv.conf.dist" "$DEST/etc/resolv.conf"
 		;;
-	xenial|sid|jessie)
+	xenial|bionic|sid|jessie)
 		rm "$DEST/etc/resolv.conf"
 		cp /etc/resolv.conf "$DEST/etc/resolv.conf"
-		if [ "$DISTRO" = "xenial" ]; then
+		if [ "$DISTRO" = "xenial" -o "$DISTRO" = "bionic" ]; then
 			DEB=ubuntu
 			DEBUSER=ubuntu
 			DEBUSERPW=ubuntu
@@ -293,6 +296,9 @@ EOF
 				zram-config \
 				ubuntu-minimal \
 				sunxi-disp-tool \
+				locales \
+				ifupdown \
+				resolvconf \
 			"
 		elif [ "$DISTRO" = "sid" -o "$DISTRO" = "jessie" ]; then
 			DEB=debian
@@ -309,12 +315,12 @@ EOF
 #!/bin/sh
 set -ex
 export DEBIAN_FRONTEND=noninteractive
-locale-gen en_US.UTF-8
 $ADDPPACMD
 apt-get -y update
 apt-get -y install dosfstools curl xz-utils iw rfkill wpasupplicant openssh-server alsa-utils $EXTRADEBS
 apt-get -y remove --purge ureadahead
 apt-get -y update
+locale-gen en_US.UTF-8
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
 chown -R 1000:1000 /home/$DEBUSER
 echo "$DEBUSER:$DEBUSERPW" | chpasswd
@@ -324,10 +330,12 @@ apt-get clean
 EOF
 		chmod +x "$DEST/second-phase"
 		do_chroot /second-phase
-		cat > "$DEST/etc/network/interfaces.d/eth0" <<EOF
+		if [ ! -e "$DEST/etc/netplan" ]; then
+				cat > "$DEST/etc/network/interfaces.d/eth0" <<EOF
 auto eth0
 iface eth0 inet dhcp
 EOF
+		fi
 		cat > "$DEST/etc/hostname" <<EOF
 pine64
 EOF
