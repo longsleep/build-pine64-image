@@ -335,6 +335,15 @@ EOF
 auto eth0
 iface eth0 inet dhcp
 EOF
+		else
+				cat > "$DEST/etc/netplan/pine64.yaml" <<EOF
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: yes
+EOF
 		fi
 		cat > "$DEST/etc/hostname" <<EOF
 pine64
