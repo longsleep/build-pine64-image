@@ -168,7 +168,7 @@ bionic-pinebook: bionic-mate-pinebook bionic-lxde-pinebook
 stretch-pinebook: stretch-minimal-pinebook
 
 .PHONY: linux-pinebook
-linux-pinebook: simple-image-pinebook bionic-pinebook xenial-pinebook stretch-pinebook
+linux-pinebook: simple-image-pinebook bionic-pinebook stretch-pinebook
 
 .PHONY: bionic-minimal-pine64
 bionic-minimal-pine64: bionic-minimal-pine64-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
