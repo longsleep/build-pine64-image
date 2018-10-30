@@ -140,9 +140,9 @@ simple-image-sopine: simple-image-sopine-$(RELEASE_NAME).img.xz
 .PHONY: simple-image
 simple-image: simple-image-pinebook simple-image-pine64 simple-image-sopine
 
-.PHONY: xenial-mate-pinebook
-xenial-mate-pinebook: xenial-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
-	xenial-mate-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
+.PHONY: bionic-mate-pinebook
+bionic-mate-pinebook: bionic-mate-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
+	bionic-mate-pinebook1080p-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz
 
 .PHONY: bionic-lxde-pinebook
 bionic-lxde-pinebook: bionic-lxde-pinebook-bspkernel-$(RELEASE_NAME)-$(RELEASE).img.xz \
@@ -161,11 +161,8 @@ stretch-minimal-pinebook: stretch-minimal-pinebook-bspkernel-$(RELEASE_NAME)-$(R
 .PHONY: stretch-openmediavault-pine64
 stretch-openmediavault-pine64: stretch-openmediavault-pine64-$(RELEASE_NAME)-$(RELEASE).img.xz
 
-.PHONY: xenial-pinebook
-xenial-pinebook: xenial-mate-pinebook
-
 .PHONY: bionic-pinebook
-bionic-pinebook: bionic-lxde-pinebook
+bionic-pinebook: bionic-mate-pinebook bionic-lxde-pinebook
 
 .PHONY: stretch-pinebook
 stretch-pinebook: stretch-minimal-pinebook
