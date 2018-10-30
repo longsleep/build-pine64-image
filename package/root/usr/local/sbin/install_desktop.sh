@@ -33,11 +33,7 @@ PACKAGES=(
 	glmark2-es2
 	libvdpau-sunxi1
 	vdpauinfo
-	aisleriot
-	geany
-	gnome-sudoku
 	mplayer
-	scratch
 	smplayer
 	smplayer-themes
 	smtube
@@ -79,9 +75,7 @@ esac
 case $DESKTOP-$DISTRO in
 	mate-Ubuntu)
 		PACKAGES+=(
-			ubuntu-mate-desktop
-			ubuntu-mate-lightdm-theme
-			ubuntu-mate-wallpapers-xenial
+			ubuntu-mate-core
 			lightdm
 		)
 		;;
@@ -141,7 +135,7 @@ esac
 
 # Install.
 apt -y update
-apt -y --no-install-recommends install ${PACKAGES[@]}
+apt -y --install-recommends install ${PACKAGES[@]}
 
 # Kill parport module loading, not available on arm64.
 if [ -e "/etc/modules-load.d/cups-filters.conf" ]; then
