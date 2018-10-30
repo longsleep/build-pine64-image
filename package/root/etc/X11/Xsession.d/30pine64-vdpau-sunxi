@@ -1,1 +1,3 @@
-export VDPAU_DRIVER=sunxi
+if [ -d /sys/module/disp ]; then
+  export VDPAU_DRIVER=sunxi
+end
