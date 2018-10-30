@@ -134,11 +134,10 @@ EOF
 chmod a+x "$DEST/usr/sbin/policy-rc.d"
 
 do_chroot() {
-	cmd="$@"
 	mount -o bind /tmp "$DEST/tmp"
 	chroot "$DEST" mount -t proc proc /proc
 	chroot "$DEST" mount -t sysfs sys /sys
-	chroot "$DEST" $cmd
+	chroot "$DEST" $CHROOT_PREFIX "$@"
 	chroot "$DEST" umount /sys
 	chroot "$DEST" umount /proc
 	umount "$DEST/tmp"
@@ -156,12 +155,20 @@ case $DISTRO in
 		DEB=ubuntu
 		DEBUSER=pine64
 		DEBUSERPW=pine64
+
+		do_chroot apt-get -y update
+		do_chroot apt-get -y install eatmydata
+
+		export DEBIAN_FRONTEND=noninteractive
+		export CHROOT_PREFIX="eatmydata --"
+
+		do_chroot locale-gen en_US.UTF-8
+
 		cat > "$DEST/second-phase" <<EOF
 #!/bin/bash
 set -ex
 export DEBIAN_FRONTEND=noninteractive
 locale-gen en_US.UTF-8
-apt-get -y update
 apt-get install -y software-properties-common dirmngr
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BF428671
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 56A3D45E
