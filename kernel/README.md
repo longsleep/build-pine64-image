@@ -55,7 +55,9 @@ LICHEE_KDIR=$(pwd)/../.. ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- LICHEE_PLAT
 ```
 
 This will compile the mali.ko Kernel module with the Kernel .config found in
-LICHEE_KDIR. To use that module with Linux, copy it to `/lib/modules/${version}/kernel/extramodules` or some other directory which can contain Kernel modules.
+LICHEE_KDIR. To use that module with Linux, copy it to
+`/lib/modules/${version}/kernel/extramodules` or some other directory which can
+contain Kernel modules.
 
 ## Ramdisk
 
@@ -87,7 +89,7 @@ the busybox binary compiled earlier.
 
 Now that you have a Kernel and initrd copy them together with the compiled
 device tree to a target location. You can use the `install_kernel.sh` script
-to do that for you. So put them on a partiion which is readable by U-Boot. If
+to do that for you. So put them on a partition which is readable by U-Boot. If
 you do not have that location yet, just use "-" to put the files into
 `../build` folder to be picked up later.
 
