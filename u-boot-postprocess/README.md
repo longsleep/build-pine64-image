@@ -69,13 +69,16 @@ and extended with the ATF.
 
 In addition some blobs, and the device tree are required to create this
 U-Boot bootloader format whre provided in the `build-pine64-image/blobs`
-directory). So have the ATF ready and compiled in `build-pine64-image/arm-trusted-firmware-pine64` and the Suxi pack tools compiled in `build-pine64-image/sunxi-pack-tools`.
+directory). So have the ATF ready and compiled in
+`build-pine64-image/arm-trusted-firmware-pine64` and the Suxi pack tools
+compiled in `build-pine64-image/sunxi-pack-tools`.
 
 ```bash
 ./u-boot-postprocess.sh
 ```
 
-This creates `out/u-boot-with-dtb.bin` which is correctly prefixed, combined with ATF and FTD wich makes it acceptable for Allwinner's boot0.
+This creates `out/u-boot-with-dtb.bin` which is correctly prefixed, combined
+with ATF and FTD wich makes it acceptable for Allwinner's boot0.
 
 ## Next steps
 

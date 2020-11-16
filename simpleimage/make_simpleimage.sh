@@ -4,7 +4,7 @@
 #
 # This script uses boot0 binary blob (as extracted from the Pine64 Android
 # image) together with a correctly prefixed U-Boot and A DOS partition table
-# to create a bootable SDcard image for the Pine64. If a Kernel and DTB is
+# to create a bootable SD card image for the Pine64. If a Kernel and DTB is
 # found in ../kernel, it is added as well.
 #
 # U-Boot tree:

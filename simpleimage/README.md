@@ -4,7 +4,10 @@ This script builds a bootable disk image usable to boot a Pine64 to Linux in
 aarch64 mode.
 
 ## Dependencies
-`qemu-user-static` is needed for creating and configuring the rootfs image. Failure to have this package installed will most likely result in a `cp: cannot stat '/usr/bin/qemu-aarch64-static': No such file or directory` type error.
+`qemu-user-static` is needed for creating and configuring the rootfs image.
+Failure to have this package installed will most likely result in a
+`cp: cannot stat '/usr/bin/qemu-aarch64-static': No such file or directory`
+type error.
 
 ## Minimal base image
 

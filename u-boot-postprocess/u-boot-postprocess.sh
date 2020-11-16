@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Simple script to create a U-Boot with all the additional parts which are
-# required to be accepted by th A64 boot0.
+# required to be accepted by the A64 boot0.
 #
 # This script requires build variants and tools from several other sources.
 # See the variable definitions below. When all files can be found, a U-Boot
